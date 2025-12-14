@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maths Practice Paper 1 (35 Questions)</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --muted:#9aa6c2;
+      --text:#e9eeff;
+      --accent:#7aa2ff;
+      --accent2:#7dffb2;
+      --danger:#ff6b6b;
+      --warning:#ffd166;
+      --border:rgba(255,255,255,.12);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(122,162,255,.25), transparent 60%),
+                  radial-gradient(1000px 700px at 80% 0%, rgba(125,255,178,.18), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    header{
+      padding:18px 18px 10px;
+      position:sticky;
+      top:0;
+      background: linear-gradient(to bottom, rgba(11,16,32,.92), rgba(11,16,32,.65));
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--border);
+      z-index:10;
+    }
+    .wrap{max-width:1100px;margin:0 auto;}
+    .topRow{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .titleBlock h1{font-size:18px;margin:0 0 2px;letter-spacing:.2px}
+    .titleBlock p{margin:0;color:var(--muted);font-size:13px}
+
+    .pillRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{
+      display:flex;gap:8px;align-items:center;
+      padding:8px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+      font-size:13px;
+      color:var(--text);
+    }
+    .pill strong{font-weight:700}
+    .timer{font-variant-numeric: tabular-nums;}
+    .btn{
+      cursor:pointer;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:9px 12px;
+      border-radius:12px;
+      box-shadow: var(--shadow);
+      transition: transform .05s ease, background .15s ease;
+      font-weight:600;
+      font-size:13px;
+    }
+    .btn:hover{background: rgba(255,255,255,.09)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{border-color: rgba(122,162,255,.35); background: rgba(122,162,255,.18)}
+    .btn.primary:hover{background: rgba(122,162,255,.25)}
+    .btn.good{border-color: rgba(125,255,178,.35); background: rgba(125,255,178,.14)}
+    .btn.good:hover{background: rgba(125,255,178,.2)}
+    .btn.danger{border-color: rgba(255,107,107,.35); background: rgba(255,107,107,.14)}
+    .btn.danger:hover{background: rgba(255,107,107,.2)}
+    .btn.ghost{box-shadow:none}
+
+    main{padding:18px}
+
+    .grid{
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background: rgba(18,26,51,.86);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .cardHeader{
+      padding:14px 14px 12px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .cardHeader h2{margin:0;font-size:14px;letter-spacing:.2px}
+    .cardHeader .sub{color:var(--muted);font-size:12px}
+
+    .qNav{
+      padding:12px;
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:8px;
+    }
+    .qBtn{
+      cursor:pointer;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding:10px 0;
+      border-radius:12px;
+      font-weight:700;
+      font-size:12px;
+      text-align:center;
+      position:relative;
+      user-select:none;
+      transition: background .15s ease, border-color .15s ease, transform .05s ease;
+    }
+    .qBtn:hover{background: rgba(255,255,255,.08)}
+    .qBtn:active{transform: translateY(1px)}
+    .qBtn.active{border-color: rgba(122,162,255,.5); background: rgba(122,162,255,.2)}
+    .qBtn.answered{border-color: rgba(125,255,178,.45)}
+    .qBtn.flagged::after{
+      content:"";
+      position:absolute;
+      right:6px;
+      top:6px;
+      width:8px;
+      height:8px;
+      border-radius:99px;
+      background: var(--warning);
+      box-shadow: 0 0 0 2px rgba(0,0,0,.25);
+    }
+
+    .panel{padding:16px}
+
+    .qMeta{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .qMeta .left{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .tag{padding:4px 8px;border-radius:999px;border:1px solid var(--border);font-size:12px;color:var(--muted)}
+
+    .qText{margin:14px 0 12px; font-size:16px; line-height:1.35; white-space:pre-wrap}
+
+    .options{display:grid;gap:10px}
+    .opt{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:12px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background: rgba(255,255,255,.05);
+      cursor:pointer;
+      transition: background .15s ease, border-color .15s ease;
+    }
+    .opt:hover{background: rgba(255,255,255,.08)}
+    .opt input{margin-top:3px}
+    .opt .lbl{font-weight:800; width:22px; flex:0 0 22px; color: rgba(233,238,255,.92)}
+    .opt .txt{color: rgba(233,238,255,.92);}
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      justify-content:space-between;
+    }
+    .actions .left, .actions .right{display:flex;gap:10px;flex-wrap:wrap}
+
+    .note{margin-top:10px;color:var(--muted);font-size:12px}
+
+    .modalBackdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.5);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:100;
+    }
+    .modal{max-width:900px;width:100%;}
+    .resultGrid{display:grid;grid-template-columns: 1fr 1fr;gap:12px;padding:14px}
+    @media (max-width: 860px){.resultGrid{grid-template-columns:1fr}}
+
+    .stat{
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background: rgba(255,255,255,.05);
+    }
+    .stat h3{margin:0 0 6px;font-size:13px;color:var(--muted)}
+    .stat .big{font-size:26px;font-weight:900;letter-spacing:.2px}
+
+    .reviewList{padding:0 14px 14px; max-height:340px; overflow:auto}
+    .reviewItem{
+      border-top:1px solid var(--border);
+      padding:12px 0;
+      display:flex;gap:10px;align-items:flex-start;justify-content:space-between;
+    }
+    .reviewItem .qno{font-weight:900; width:38px; flex: 0 0 38px}
+    .reviewItem .mini{color:var(--muted);font-size:12px; white-space:pre-wrap}
+    .reviewItem .badge{
+      padding:4px 8px;border-radius:999px;border:1px solid var(--border);
+      font-size:12px;flex:0 0 auto
+    }
+    .badge.ok{border-color: rgba(125,255,178,.45); color: rgba(125,255,178,.95)}
+    .badge.bad{border-color: rgba(255,107,107,.45); color: rgba(255,107,107,.95)}
+    .badge.na{border-color: rgba(255,209,102,.45); color: rgba(255,209,102,.95)}
+
+    .footerBtns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;padding:14px;border-top:1px solid var(--border)}
+
+    a.link{color:var(--accent);text-decoration:none}
+    a.link:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="topRow">
+        <div class="titleBlock">
+          <h1>Maths Practice Paper 1 (35 Questions)</h1>
+          <p>Interactive quiz • Multiple choice • Timer optional</p>
+        </div>
+        <div class="pillRow">
+          <div class="pill"><span>Answered:</span> <strong id="answeredCount">0</strong><span>/</span><strong id="totalCount">35</strong></div>
+          <div class="pill timer"><span>Time:</span> <strong id="timeText">40:00</strong></div>
+          <button class="btn ghost" id="toggleTimerBtn" title="Start/Pause timer">Start timer</button>
+          <button class="btn ghost" id="saveBtn" title="Save progress to this browser">Save</button>
+          <button class="btn ghost" id="loadBtn" title="Load saved progress">Load</button>
+          <button class="btn danger" id="resetBtn" title="Clear answers">Reset</button>
+          <button class="btn good" id="submitBtn">Submit</button>
+        </div>
+      </div>
+      <p class="note">Tip: Click question numbers on the left. Use <b>Flag</b> if you want to come back later.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="grid">
+        <section class="card" aria-label="Question Navigator">
+          <div class="cardHeader">
+            <div>
+              <h2>Question Navigator</h2>
+              <div class="sub">Green border = answered • Yellow dot = flagged</div>
+            </div>
+            <button class="btn ghost" id="jumpFirst">Q1</button>
+          </div>
+          <div class="qNav" id="qNav"></div>
+          <div class="cardHeader" style="border-top:1px solid var(--border);border-bottom:none;">
+            <div>
+              <h2>Quick actions</h2>
+              <div class="sub">Use keyboard: 1–5 to choose A–E, ←/→ to move</div>
+            </div>
+          </div>
+          <div style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn primary" id="prevBtn">← Prev</button>
+            <button class="btn primary" id="nextBtn">Next →</button>
+            <button class="btn ghost" id="flagBtn">Flag / Unflag</button>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Question Panel">
+          <div class="cardHeader">
+            <div class="qMeta">
+              <div class="left">
+                <span class="tag" id="qIndexTag">Question 1 of 35</span>
+                <span class="tag" id="flagTag" style="display:none; border-color: rgba(255,209,102,.45); color: rgba(255,209,102,.95);">Flagged</span>
+              </div>
+              <div class="right" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                <button class="btn ghost" id="clearBtn">Clear answer</button>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="qText" id="qText"></div>
+            <div class="options" id="options"></div>
+            <div class="actions">
+              <div class="left">
+                <button class="btn primary" id="prevBtn2">← Prev</button>
+                <button class="btn primary" id="nextBtn2">Next →</button>
+              </div>
+              <div class="right">
+                <button class="btn ghost" id="flagBtn2">Flag / Unflag</button>
+                <button class="btn good" id="submitBtn2">Submit</button>
+              </div>
+            </div>
+            <div class="note" id="autoSaveNote" style="display:none;">Saved.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Results modal -->
+  <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-label="Results">
+    <div class="card modal">
+      <div class="cardHeader">
+        <div>
+          <h2>Results</h2>
+          <div class="sub" id="resultSub">Your score summary</div>
+        </div>
+        <button class="btn ghost" id="closeModalBtn">Close</button>
+      </div>
+      <div class="resultGrid">
+        <div class="stat">
+          <h3>Score</h3>
+          <div class="big" id="scoreBig">0 / 35</div>
+          <div class="sub" id="scorePct">0%</div>
+        </div>
+        <div class="stat">
+          <h3>Answered</h3>
+          <div class="big" id="answeredBig">0</div>
+          <div class="sub" id="flaggedBig">0 flagged</div>
+        </div>
+      </div>
+      <div class="reviewList" id="reviewList"></div>
+      <div class="footerBtns">
+        <button class="btn ghost" id="reviewFlaggedBtn">Review flagged</button>
+        <button class="btn danger" id="resetFromModalBtn">Reset</button>
+        <button class="btn good" id="keepPractisingBtn">Keep practising</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Data: Practice Paper 1 (35 Q) + answers.
+  // Answers are the letter A-E.
+  const QUESTIONS = [
+    { q: "Four of these numbers have the same remainder when divided by 5:\n21, 37, 46, 52, 63\n\nWhich number has a different remainder?", options:["21","37","46","52","63"], ans:"E" },
+    { q: "What is the missing number ▲ in this pattern?\n\n4, 10, 22, 46, ▲", options:["70","86","94","98","102"], ans:"C" },
+    { q: "A straight angle is 180°. One angle is 47°. The other angle forms a straight line with it.\n\nWhat is the size of the other angle?", options:["133°","137°","143°","153°","227°"], ans:"A" },
+    { q: "Liam has 3 pairs of trousers and 5 shirts.\nSofia has 4 pairs of trousers and 3 shirts.\n\nEach outfit is 1 pair of trousers and 1 shirt.\nWho has more possible outfits, and by how many?", options:["Liam has 1 more","Liam has 3 more","They have the same number","Sofia has 1 more","Sofia has 3 more"], ans:"A" },
+    { q: "Jug A contains 1 L 350 mL of water.\nJug B contains 750 mL of water.\nJug C contains 1 L 25 mL of water.\n\nWhat is the total volume?", options:["2 L 125 mL","3 L 25 mL","3 L 75 mL","3 L 125 mL","3 L 250 mL"], ans:"D" },
+    { q: "Which of these decimals is between 0.47 and 0.52?", options:["0.41","0.45","0.48","0.53","0.56"], ans:"C" },
+    { q: "A box holds 60 marbles.\n2/5 are red, 1/3 are blue and the rest are green.\n\nHow many green marbles are there?", options:["8","10","12","14","16"], ans:"C" },
+    { q: "A person is facing north. They turn 135° clockwise.\n\nWhich direction are they now facing?", options:["north-east","east","south-east","south-west","north-west"], ans:"D" },
+    { q: "Which statement is correct?\n\n1. 3/8 is greater than 1/2\n2. 2/5 is less than 1/3\n3. 7/10 is greater than 2/3", options:["statement 1 only","statement 3 only","statements 1 and 2 only","statements 2 and 3 only","all of them"], ans:"D" },
+    { q: "A rectangle is 11 cm long and 5 cm wide.\nAnother rectangle has the same perimeter but is 9 cm wide.\n\nWhat is the length of the second rectangle?", options:["6 cm","7 cm","9 cm","11 cm","13 cm"], ans:"B" },
+    { q: "The perimeter of a square is 28 cm.\nWhat is the area of the square?", options:["16 cm²","28 cm²","36 cm²","42 cm²","49 cm²"], ans:"E" },
+    { q: "When a whole number is divided by 6, the remainder is 4.\n\nWhich of these could be the number?", options:["18","22","24","28","30"], ans:"D" },
+    { q: "Sydney is 2 hours ahead of Perth.\nWhen it is 3:15 pm in Perth, what time is it in Sydney?", options:["1:15 pm","3:15 pm","4:15 pm","5:15 pm","7:15 pm"], ans:"D" },
+    { q: "1 m = 100 cm.\nA rope is 3.75 m long.\n\nHow many centimetres long is the rope?", options:["275 cm","305 cm","325 cm","350 cm","375 cm"], ans:"E" },
+    { q: "I think of a number. When I add 27, the result is 94.\n\nWhat is the number?", options:["57","61","67","71","77"], ans:"C" },
+    { q: "A class has 32 students. 3/8 of them bring a packed lunch.\n\nHow many students bring a packed lunch?", options:["8","10","11","12","16"], ans:"D" },
+    { q: "Ella has 5 times as many stickers as Noah.\nNoah has 3 times as many stickers as Mia.\n\nHow many times as many stickers does Ella have as Mia?", options:["5","8","10","12","15"], ans:"C" },
+    { q: "A large packet of biscuits holds 48 biscuits.\nTwo large packets = three medium packets.\nTwo medium packets = three small packets.\n\nHow many biscuits does a small packet hold?", options:["8","10","12","16","24"], ans:"C" },
+    { q: "A shop sells: 1 orange for $0.60, and a bag of 8 oranges for $4.40.\nJenny has $13.\n\nWhat is the maximum number of oranges she can buy?", options:["16","17","18","19","20"], ans:"E" },
+    { q: "A cinema sold a total of 420 tickets on Monday–Thursday.\nTuesday sold half of Monday.\nWednesday sold 80 fewer than Monday.\nThursday sold 50.\n\nHow many were sold on Monday?", options:["80","100","120","140","160"], ans:"D" },
+    { q: "A runner completes a lap in 7 minutes. Another completes a lap in 9 minutes.\nThey start together.\n\nAfter how many minutes will they next be together at the start line?", options:["28","36","42","63","72"], ans:"E" },
+    { q: "A number is greater than 10 and less than 40.\n4×number < 120 and 6×number > 90.\n\nWhich could be the number?", options:["14","16","18","20","22"], ans:"C" },
+    { q: "A can is half full and weighs 200 g.\nWhen one-quarter full, it weighs 140 g.\n\nWhat is the mass when three-quarters full?", options:["230 g","250 g","260 g","280 g","300 g"], ans:"B" },
+    { q: "A solid cube is made from 27 identical small cubes (3×3×3).\n\nHow many small cubes cannot be seen from the outside?", options:["0","1","3","5","7"], ans:"B" },
+    { q: "The length of a rectangle is 9 cm and its area is 45 cm².\n\nWhat is its perimeter?", options:["10 cm","18 cm","20 cm","24 cm","28 cm"], ans:"E" },
+    { q: "The mean (average) of four numbers is 12.\nThree of the numbers are 8, 10 and 18.\n\nWhat is the fourth number?", options:["6","10","12","14","16"], ans:"D" },
+    { q: "When a certain two-digit number is divided by 9, the remainder is 5.\n\nWhich of these could be the number?", options:["32","35","41","50","59"], ans:"B" },
+    { q: "A spinner has equal sections numbered 1 to 5.\n\nWhat is the probability of spinning a number greater than 3?", options:["1/5","2/5","3/5","4/5","1"], ans:"B" },
+    { q: "In Year 6 there are 120 students.\n3/10 travel by bus, 1/4 walk, the rest travel by car.\n\nHow many travel by car?", options:["42","48","54","60","72"], ans:"E" },
+    { q: "A shopkeeper rounds prices to the nearest dollar.\nOne item costs $7.40 and another costs $8.60.\n\nWhat is the total rounded cost?", options:["$15","$16","$17","$18","$20"], ans:"C" },
+    { q: "The sum of three consecutive whole numbers is 81.\n\nWhat is the smallest number?", options:["25","26","27","28","29"], ans:"C" },
+    { q: "A box contains only red and yellow counters. There are 18 counters.\nP(red)=2/3.\n\nHow many yellow counters are in the box?", options:["4","5","6","9","12"], ans:"C" },
+    { q: "Two numbers have HCF 7 and LCM 84.\nOne number is 21.\n\nWhat is the other number?", options:["14","24","28","35","42"], ans:"E" },
+    { q: "A rectangular garden is 6 m by 4 m.\nA path 1 m wide is built all around the outside.\n\nWhat is the total area of the path?", options:["8 m²","10 m²","14 m²","18 m²","20 m²"], ans:"D" },
+    { q: "How many whole numbers from 1 to 100 inclusive are multiples of 3 but not multiples of 5?", options:["20","24","27","30","34"], ans:"B" },
+  ];
+
+  const STORAGE_KEY = "math_practice_paper1_v1";
+
+  // State
+  let idx = 0;
+  let answers = Array(QUESTIONS.length).fill(null); // store A-E or null
+  let flagged = Array(QUESTIONS.length).fill(false);
+
+  // Timer
+  const TOTAL_SECONDS = 40 * 60;
+  let remaining = TOTAL_SECONDS;
+  let timerRunning = false;
+  let timerHandle = null;
+
+  const els = {
+    qNav: document.getElementById("qNav"),
+    qText: document.getElementById("qText"),
+    options: document.getElementById("options"),
+    answeredCount: document.getElementById("answeredCount"),
+    totalCount: document.getElementById("totalCount"),
+    timeText: document.getElementById("timeText"),
+    toggleTimerBtn: document.getElementById("toggleTimerBtn"),
+    prevBtn: document.getElementById("prevBtn"),
+    nextBtn: document.getElementById("nextBtn"),
+    prevBtn2: document.getElementById("prevBtn2"),
+    nextBtn2: document.getElementById("nextBtn2"),
+    flagBtn: document.getElementById("flagBtn"),
+    flagBtn2: document.getElementById("flagBtn2"),
+    flagTag: document.getElementById("flagTag"),
+    qIndexTag: document.getElementById("qIndexTag"),
+    clearBtn: document.getElementById("clearBtn"),
+    saveBtn: document.getElementById("saveBtn"),
+    loadBtn: document.getElementById("loadBtn"),
+    resetBtn: document.getElementById("resetBtn"),
+    submitBtn: document.getElementById("submitBtn"),
+    submitBtn2: document.getElementById("submitBtn2"),
+    jumpFirst: document.getElementById("jumpFirst"),
+    autoSaveNote: document.getElementById("autoSaveNote"),
+    // modal
+    modalBackdrop: document.getElementById("modalBackdrop"),
+    closeModalBtn: document.getElementById("closeModalBtn"),
+    scoreBig: document.getElementById("scoreBig"),
+    scorePct: document.getElementById("scorePct"),
+    answeredBig: document.getElementById("answeredBig"),
+    flaggedBig: document.getElementById("flaggedBig"),
+    reviewList: document.getElementById("reviewList"),
+    reviewFlaggedBtn: document.getElementById("reviewFlaggedBtn"),
+    resetFromModalBtn: document.getElementById("resetFromModalBtn"),
+    keepPractisingBtn: document.getElementById("keepPractisingBtn"),
+    resultSub: document.getElementById("resultSub"),
+  };
+
+  function letterFromIndex(i){
+    return ["A","B","C","D","E"][i];
+  }
+
+  function formatTime(sec){
+    const m = Math.floor(sec/60);
+    const s = sec%60;
+    return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  }
+
+  function updateCounts(){
+    const answered = answers.filter(Boolean).length;
+    els.answeredCount.textContent = answered;
+    els.totalCount.textContent = QUESTIONS.length;
+  }
+
+  function renderNav(){
+    els.qNav.innerHTML = "";
+    QUESTIONS.forEach((_, i) => {
+      const b = document.createElement("button");
+      b.className = "qBtn";
+      b.textContent = String(i+1);
+      b.setAttribute("aria-label", `Go to question ${i+1}`);
+      b.addEventListener("click", () => goTo(i));
+      els.qNav.appendChild(b);
+    });
+    updateNavStyles();
+  }
+
+  function updateNavStyles(){
+    const buttons = Array.from(els.qNav.children);
+    buttons.forEach((b, i) => {
+      b.classList.toggle("active", i === idx);
+      b.classList.toggle("answered", !!answers[i]);
+      b.classList.toggle("flagged", !!flagged[i]);
+    });
+  }
+
+  function renderQuestion(){
+    const item = QUESTIONS[idx];
+    els.qIndexTag.textContent = `Question ${idx+1} of ${QUESTIONS.length}`;
+    els.qText.textContent = item.q;
+
+    els.flagTag.style.display = flagged[idx] ? "inline-flex" : "none";
+
+    els.options.innerHTML = "";
+    const current = answers[idx];
+    item.options.forEach((opt, i) => {
+      const letter = letterFromIndex(i);
+      const id = `q${idx}_opt${letter}`;
+
+      const label = document.createElement("label");
+      label.className = "opt";
+      label.setAttribute("for", id);
+
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = `q${idx}`;
+      input.id = id;
+      input.value = letter;
+      input.checked = (current === letter);
+      input.addEventListener("change", () => {
+        answers[idx] = letter;
+        updateCounts();
+        updateNavStyles();
+        autoSave();
+      });
+
+      const lbl = document.createElement("div");
+      lbl.className = "lbl";
+      lbl.textContent = letter;
+
+      const txt = document.createElement("div");
+      txt.className = "txt";
+      txt.textContent = opt;
+
+      label.appendChild(input);
+      label.appendChild(lbl);
+      label.appendChild(txt);
+
+      els.options.appendChild(label);
+    });
+
+    updateCounts();
+    updateNavStyles();
+  }
+
+  function goTo(i){
+    idx = Math.max(0, Math.min(QUESTIONS.length-1, i));
+    renderQuestion();
+  }
+
+  function next(){
+    if (idx < QUESTIONS.length-1) goTo(idx+1);
+  }
+
+  function prev(){
+    if (idx > 0) goTo(idx-1);
+  }
+
+  function toggleFlag(){
+    flagged[idx] = !flagged[idx];
+    els.flagTag.style.display = flagged[idx] ? "inline-flex" : "none";
+    updateNavStyles();
+    autoSave();
+  }
+
+  function clearAnswer(){
+    answers[idx] = null;
+    renderQuestion();
+    autoSave();
+  }
+
+  function startTimer(){
+    if (timerRunning) return;
+    timerRunning = true;
+    els.toggleTimerBtn.textContent = "Pause timer";
+    timerHandle = setInterval(() => {
+      remaining = Math.max(0, remaining - 1);
+      els.timeText.textContent = formatTime(remaining);
+      if (remaining === 0){
+        stopTimer();
+        showResults(true);
+      }
+    }, 1000);
+  }
+
+  function stopTimer(){
+    timerRunning = false;
+    els.toggleTimerBtn.textContent = "Start timer";
+    if (timerHandle){
+      clearInterval(timerHandle);
+      timerHandle = null;
+    }
+  }
+
+  function toggleTimer(){
+    timerRunning ? stopTimer() : startTimer();
+  }
+
+  function computeScore(){
+    let correct = 0;
+    QUESTIONS.forEach((q, i) => {
+      if (answers[i] && answers[i] === q.ans) correct++;
+    });
+    return correct;
+  }
+
+  function showResults(auto=false){
+    const answeredCount = answers.filter(Boolean).length;
+    const flaggedCount = flagged.filter(Boolean).length;
+    const score = computeScore();
+    const pct = Math.round((score/QUESTIONS.length)*100);
+
+    els.scoreBig.textContent = `${score} / ${QUESTIONS.length}`;
+    els.scorePct.textContent = `${pct}%`;
+    els.answeredBig.textContent = `${answeredCount} answered`;
+    els.flaggedBig.textContent = `${flaggedCount} flagged`;
+
+    els.resultSub.textContent = auto
+      ? "Time’s up — here are your results"
+      : "Here are your results";
+
+    // Build review list
+    els.reviewList.innerHTML = "";
+    QUESTIONS.forEach((q, i) => {
+      const wrap = document.createElement("div");
+      wrap.className = "reviewItem";
+
+      const left = document.createElement("div");
+      left.style.display = "flex";
+      left.style.gap = "10px";
+      left.style.alignItems = "flex-start";
+
+      const qno = document.createElement("div");
+      qno.className = "qno";
+      qno.textContent = `Q${i+1}`;
+
+      const info = document.createElement("div");
+      const your = answers[i] ? `Your answer: ${answers[i]}` : "Your answer: (blank)";
+      const corr = `Correct: ${q.ans}`;
+      info.innerHTML = `<div style="font-weight:800; margin-bottom:4px;">${your}</div><div class="mini">${corr}</div>`;
+
+      left.appendChild(qno);
+      left.appendChild(info);
+
+      const right = document.createElement("div");
+      right.style.display = "flex";
+      right.style.gap = "8px";
+      right.style.alignItems = "center";
+
+      const badge = document.createElement("div");
+      if (!answers[i]){
+        badge.className = "badge na";
+        badge.textContent = "Not answered";
+      } else if (answers[i] === q.ans){
+        badge.className = "badge ok";
+        badge.textContent = "Correct";
+      } else {
+        badge.className = "badge bad";
+        badge.textContent = "Incorrect";
+      }
+
+      const jump = document.createElement("button");
+      jump.className = "btn ghost";
+      jump.textContent = "Go";
+      jump.addEventListener("click", () => {
+        hideModal();
+        goTo(i);
+      });
+
+      right.appendChild(badge);
+      right.appendChild(jump);
+
+      wrap.appendChild(left);
+      wrap.appendChild(right);
+
+      els.reviewList.appendChild(wrap);
+    });
+
+    els.modalBackdrop.style.display = "flex";
+  }
+
+  function hideModal(){
+    els.modalBackdrop.style.display = "none";
+  }
+
+  function resetAll(){
+    if (!confirm("Reset everything? This will clear answers, flags, and timer.")) return;
+    answers = Array(QUESTIONS.length).fill(null);
+    flagged = Array(QUESTIONS.length).fill(false);
+    idx = 0;
+    remaining = TOTAL_SECONDS;
+    els.timeText.textContent = formatTime(remaining);
+    stopTimer();
+    removeSaved();
+    renderNav();
+    renderQuestion();
+  }
+
+  function saveProgress(){
+    const payload = {
+      answers,
+      flagged,
+      idx,
+      remaining,
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    flashSaved();
+  }
+
+  function loadProgress(){
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw){
+      alert("No saved progress found on this browser.");
+      return;
+    }
+    try{
+      const data = JSON.parse(raw);
+      if (!data || !Array.isArray(data.answers) || data.answers.length !== QUESTIONS.length){
+        alert("Saved data doesn’t match this paper.");
+        return;
+      }
+      answers = data.answers;
+      flagged = Array.isArray(data.flagged) ? data.flagged : flagged;
+      idx = typeof data.idx === "number" ? data.idx : 0;
+      remaining = typeof data.remaining === "number" ? data.remaining : TOTAL_SECONDS;
+      els.timeText.textContent = formatTime(remaining);
+      stopTimer();
+      renderNav();
+      renderQuestion();
+      flashSaved("Loaded.");
+    }catch(e){
+      alert("Could not load saved progress.");
+    }
+  }
+
+  function removeSaved(){
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+  let autoSaveT = null;
+  function autoSave(){
+    // lightweight debounce
+    clearTimeout(autoSaveT);
+    autoSaveT = setTimeout(saveProgress, 250);
+  }
+
+  function flashSaved(msg="Saved."){
+    els.autoSaveNote.textContent = msg;
+    els.autoSaveNote.style.display = "block";
+    setTimeout(() => { els.autoSaveNote.style.display = "none"; }, 900);
+  }
+
+  function reviewFlagged(){
+    const first = flagged.findIndex(Boolean);
+    if (first === -1){
+      alert("No flagged questions.");
+      return;
+    }
+    hideModal();
+    goTo(first);
+  }
+
+  // Keyboard controls
+  document.addEventListener("keydown", (e) => {
+    if (els.modalBackdrop.style.display === "flex"){
+      if (e.key === "Escape") hideModal();
+      return;
+    }
+    if (e.key === "ArrowRight") next();
+    if (e.key === "ArrowLeft") prev();
+
+    // 1-5 => A-E
+    const map = {"1":"A","2":"B","3":"C","4":"D","5":"E"};
+    if (map[e.key]){
+      answers[idx] = map[e.key];
+      renderQuestion();
+      autoSave();
+    }
+
+    if (e.key.toLowerCase() === "f") toggleFlag();
+  });
+
+  // Wire up buttons
+  els.prevBtn.addEventListener("click", prev);
+  els.nextBtn.addEventListener("click", next);
+  els.prevBtn2.addEventListener("click", prev);
+  els.nextBtn2.addEventListener("click", next);
+  els.flagBtn.addEventListener("click", toggleFlag);
+  els.flagBtn2.addEventListener("click", toggleFlag);
+  els.clearBtn.addEventListener("click", clearAnswer);
+
+  els.toggleTimerBtn.addEventListener("click", toggleTimer);
+
+  els.saveBtn.addEventListener("click", saveProgress);
+  els.loadBtn.addEventListener("click", loadProgress);
+  els.resetBtn.addEventListener("click", resetAll);
+
+  els.submitBtn.addEventListener("click", () => showResults(false));
+  els.submitBtn2.addEventListener("click", () => showResults(false));
+
+  els.jumpFirst.addEventListener("click", () => goTo(0));
+
+  els.closeModalBtn.addEventListener("click", hideModal);
+  els.modalBackdrop.addEventListener("click", (e) => {
+    if (e.target === els.modalBackdrop) hideModal();
+  });
+
+  els.reviewFlaggedBtn.addEventListener("click", reviewFlagged);
+  els.resetFromModalBtn.addEventListener("click", () => { hideModal(); resetAll(); });
+  els.keepPractisingBtn.addEventListener("click", hideModal);
+
+  // Init
+  els.timeText.textContent = formatTime(remaining);
+  renderNav();
+  renderQuestion();
+
+  // Try auto-load silently if saved exists
+  if (localStorage.getItem(STORAGE_KEY)){
+    // Uncomment if you want to auto-load every time:
+    // loadProgress();
+  }
+</script>
+</body>
+</html>
